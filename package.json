@@ -1,0 +1,22 @@
+{
+  "name": "assignment-2",
+  "version": "1.0.0",
+  "description": "Route Node.js Assignment 2 - Core Modules, HTTP CRUD API & Bonus",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "part1": "node part1.js",
+    "bonus": "node bonus.js",
+    "test": "node test-server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "http",
+    "core-modules",
+    "crud",
+    "postman",
+    "leetcode"
+  ],
+  "author": "",
+  "license": "ISC"
+}
