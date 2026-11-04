@@ -192,10 +192,18 @@ const server = http.createServer(async (req, res) => {
   return sendJSON(res, 404, { message: "Route not found" });
 });
 
+function startServer(port = PORT) {
+  if (!server.listening) {
+    server.listen(port, () => {
+      console.log(`Server is running at http://localhost:${port}`);
+    });
+  }
+  return server;
+}
+
 if (require.main === module) {
-  server.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
-  });
+  startServer();
 }
 
 module.exports = server;
+module.exports.startServer = startServer;
