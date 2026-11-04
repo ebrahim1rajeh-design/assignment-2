@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "part1": "node part1.js",
-    "bonus": "node bonus.js",
-    "test": "node test-server.js"
+    "bonus": "node bonus.js"
   },
   "keywords": [
     "nodejs",

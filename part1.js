@@ -16,7 +16,7 @@ function logCurrentFileAndDir() {
     File: __filename,
     Dir: __dirname
   };
-  console.log("Q1 Result:", result);
+  console.log(result);
   return result;
 }
 
@@ -24,18 +24,17 @@ function logCurrentFileAndDir() {
 // Input Example: /user/files/report.pdf -> Output Example: "report.pdf"
 function getFileName(filePath) {
   const fileName = path.basename(filePath);
-  console.log(`Q2 Result for '${filePath}':`, fileName);
+  console.log(`"${fileName}"`);
   return fileName;
 }
 
 // 3. Write a function that builds a path from an object (0.5 Grade)
 // Input Example: { dir: "/folder", name: "app", ext: ".js"} -> Output Example: "/folder/app.js"
 function buildPathFromObject(pathObj) {
-  // Using path.format and normalizing slashes for cross-platform consistency
-  const builtPath = (path.posix && pathObj.dir && pathObj.dir.startsWith('/')) 
+  const builtPath = (path.posix && pathObj.dir && pathObj.dir.startsWith('/'))
     ? path.posix.format(pathObj)
     : path.format(pathObj).replace(/\\/g, '/');
-  console.log("Q3 Result:", builtPath);
+  console.log(`"${builtPath}"`);
   return builtPath;
 }
 
@@ -43,7 +42,7 @@ function buildPathFromObject(pathObj) {
 // Input Example: /docs/readme.md -> Output Example: ".md"
 function getFileExtension(filePath) {
   const ext = path.extname(filePath);
-  console.log(`Q4 Result for '${filePath}':`, ext);
+  console.log(`"${ext}"`);
   return ext;
 }
 
@@ -55,7 +54,7 @@ function parsePathNameAndExt(filePath) {
     Name: parsed.name,
     Ext: parsed.ext
   };
-  console.log(`Q5 Result for '${filePath}':`, result);
+  console.log(result);
   return result;
 }
 
@@ -63,16 +62,15 @@ function parsePathNameAndExt(filePath) {
 // Input Example: /home/user/file.txt -> Output Example: true
 function isPathAbsolute(filePath) {
   const isAbs = path.isAbsolute(filePath);
-  console.log(`Q6 Result for '${filePath}':`, isAbs);
+  console.log(isAbs);
   return isAbs;
 }
 
 // 7. Write a function that joins multiple segments (0.5 Grade)
 // Input: "src", "components", "App.js" -> Output Example: src/components/App.js
 function joinSegments(...segments) {
-  // Normalize forward slashes for cross-platform consistency
   const joined = path.join(...segments).replace(/\\/g, '/');
-  console.log("Q7 Result:", joined);
+  console.log(joined);
   return joined;
 }
 
@@ -80,7 +78,7 @@ function joinSegments(...segments) {
 // Input Example: ./index.js -> Output Example: /home/user/project/src/index.js
 function resolveRelativePath(relPath) {
   const resolved = path.resolve(relPath);
-  console.log(`Q8 Result for '${relPath}':`, resolved);
+  console.log(resolved);
   return resolved;
 }
 
@@ -88,7 +86,7 @@ function resolveRelativePath(relPath) {
 // Input Example: /folder1, folder2/file.txt -> Output Example: /folder1/folder2/file.txt
 function joinTwoPaths(p1, p2) {
   const joined = path.join(p1, p2).replace(/\\/g, '/');
-  console.log(`Q9 Result:`, joined);
+  console.log(joined);
   return joined;
 }
 
@@ -97,7 +95,6 @@ function joinTwoPaths(p1, p2) {
 function deleteFileAsync(filePath, callback) {
   fs.unlink(filePath, (err) => {
     if (err) {
-      console.error(`Error deleting file: ${err.message}`);
       if (callback) callback(err);
       return;
     }
@@ -112,7 +109,7 @@ function deleteFileAsync(filePath, callback) {
 function createFolderSync(folderPath) {
   try {
     fs.mkdirSync(folderPath, { recursive: true });
-    console.log("Q11 Result: Success");
+    console.log("Success");
     return "Success";
   } catch (err) {
     console.error("Error creating folder:", err.message);
@@ -172,7 +169,7 @@ function writeFileAsync(filePath, content, callback) {
 // Input Example: "./notes.txt" -> Output Example: true
 function checkPathExists(checkPath) {
   const exists = fs.existsSync(checkPath);
-  console.log(`Q16 Result for '${checkPath}':`, exists);
+  console.log(exists);
   return exists;
 }
 
@@ -183,7 +180,7 @@ function getOSPlatformAndArch() {
     Platform: os.platform(),
     Arch: os.arch()
   };
-  console.log("Q17 Result:", result);
+  console.log(result);
   return result;
 }
 
@@ -196,18 +193,14 @@ function readFileInChunks(filePath) {
 
     readable.on('data', (chunk) => {
       chunkCount++;
-      console.log(`[Chunk ${chunkCount}]:`, chunk);
+      console.log(`[Chunk ${chunkCount}]: ${chunk.trim()}`);
     });
 
     readable.on('end', () => {
-      console.log(`Finished reading file in ${chunkCount} chunks.`);
       resolve();
     });
 
-    readable.on('error', (err) => {
-      console.error("Stream read error:", err);
-      reject(err);
-    });
+    readable.on('error', reject);
   });
 }
 
@@ -240,10 +233,9 @@ function compressFilePipeline(srcPath, destPath) {
 
     pipeline(source, gzip, destination, (err) => {
       if (err) {
-        console.error("Pipeline failed:", err);
         reject(err);
       } else {
-        console.log(`Pipeline succeeded: ${srcPath} compressed into ${destPath}`);
+        console.log(`File compressed successfully using pipeline`);
         resolve();
       }
     });
@@ -251,91 +243,98 @@ function compressFilePipeline(srcPath, destPath) {
 }
 
 // ==========================================
-// Demo / Runner for testing all 20 functions
+// Runner to demonstrate and test all 20 questions
 // ==========================================
-async function runAll() {
-  console.log("================== RUNNING PART 1 ==================");
+async function runDemo() {
+  console.log("========== Testing Part 1: Node.js Core Modules ==========\n");
 
-  // 1
+  console.log("1. Current file path and directory:");
   logCurrentFileAndDir();
 
-  // 2
+  console.log("\n2. File name from path:");
   getFileName("/user/files/report.pdf");
 
-  // 3
+  console.log("\n3. Build path from object:");
   buildPathFromObject({ dir: "/folder", name: "app", ext: ".js" });
 
-  // 4
+  console.log("\n4. File extension from path:");
   getFileExtension("/docs/readme.md");
 
-  // 5
+  console.log("\n5. Parse path into name and ext:");
   parsePathNameAndExt("/home/app/main.js");
 
-  // 6
+  console.log("\n6. Check if path is absolute:");
   isPathAbsolute("/home/user/file.txt");
 
-  // 7
+  console.log("\n7. Join multiple segments:");
   joinSegments("src", "components", "App.js");
 
-  // 8
+  console.log("\n8. Resolve relative path to absolute:");
   resolveRelativePath("./index.js");
 
-  // 9
+  console.log("\n9. Join two paths:");
   joinTwoPaths("/folder1", "folder2/file.txt");
 
-  // 10
-  const tempToDelete = path.join(__dirname, "temp-to-delete.txt");
-  fs.writeFileSync(tempToDelete, "temporary content");
-  deleteFileAsync(tempToDelete);
+  // Temporary folder for clean file tests
+  const testDir = path.join(os.tmpdir(), "route-assignment2-tests");
+  if (!fs.existsSync(testDir)) fs.mkdirSync(testDir, { recursive: true });
 
-  // 11
-  createFolderSync(path.join(__dirname, "temp-folder"));
+  console.log("\n10. Delete file asynchronously:");
+  const testFile10 = path.join(testDir, "file.txt");
+  fs.writeFileSync(testFile10, "delete me");
+  await new Promise((res) => deleteFileAsync(testFile10, res));
 
-  // 12
+  console.log("\n11. Create folder synchronously:");
+  const testFolder11 = path.join(testDir, "new-folder");
+  createFolderSync(testFolder11);
+
+  console.log("\n12. Start event listener:");
   const startEmitter = setupStartListener();
   startEmitter.emit('start');
 
-  // 13
+  console.log("\n13. Custom login event:");
   setupAndEmitLogin("Ahmed");
 
-  // 14
-  const notesPath = path.join(__dirname, "notes.txt");
-  fs.writeFileSync(notesPath, "This is a note.");
-  readFileContentSync(notesPath);
+  console.log("\n14. Read file synchronously:");
+  const testNotes14 = path.join(testDir, "notes.txt");
+  fs.writeFileSync(testNotes14, "This is a note.");
+  readFileContentSync(testNotes14);
 
-  // 15
-  await new Promise((res) => {
-    writeFileAsync(path.join(__dirname, "async.txt"), "Async save", res);
-  });
+  console.log("\n15. Write asynchronously to file:");
+  const testAsync15 = path.join(testDir, "async.txt");
+  await new Promise((res) => writeFileAsync(testAsync15, "Async save", res));
 
-  // 16
-  checkPathExists(notesPath);
+  console.log("\n16. Check if path exists:");
+  checkPathExists(testNotes14);
 
-  // 17
+  console.log("\n17. OS platform and CPU architecture:");
   getOSPlatformAndArch();
 
-  // 18
-  const bigPath = path.join(__dirname, "big.txt");
-  fs.writeFileSync(bigPath, "Node.js is a powerful JavaScript runtime built on Chrome's V8 engine. ".repeat(10));
-  await readFileInChunks(bigPath);
+  console.log("\n18. Readable stream in chunks:");
+  const testBig18 = path.join(testDir, "big.txt");
+  fs.writeFileSync(testBig18, "Node.js core modules streams demonstration in chunks. ".repeat(6));
+  await readFileInChunks(testBig18);
 
-  // 19
-  const sourcePath = path.join(__dirname, "source.txt");
-  const destPath = path.join(__dirname, "dest.txt");
-  fs.writeFileSync(sourcePath, "Content to copy using streams.");
-  await copyFileUsingStreams(sourcePath, destPath);
+  console.log("\n19. Copy content using streams:");
+  const testSrc19 = path.join(testDir, "source.txt");
+  const testDest19 = path.join(testDir, "dest.txt");
+  fs.writeFileSync(testSrc19, "File content copied via stream.");
+  await copyFileUsingStreams(testSrc19, testDest19);
 
-  // 20
-  const dataPath = path.join(__dirname, "data.txt");
-  const gzPath = path.join(__dirname, "data.txt.gz");
-  fs.writeFileSync(dataPath, "Hello World from data compression pipeline!");
-  await compressFilePipeline(dataPath, gzPath);
+  console.log("\n20. Compress file using pipeline:");
+  const testData20 = path.join(testDir, "data.txt");
+  const testGz20 = path.join(testDir, "data.txt.gz");
+  fs.writeFileSync(testData20, "Data to compress using zlib pipeline.");
+  await compressFilePipeline(testData20, testGz20);
 
-  console.log("================== PART 1 FINISHED ==================");
+  // Clean up temporary test files cleanly
+  fs.rmSync(testDir, { recursive: true, force: true });
+
+  console.log("\n==================== Completed Part 1 ====================");
 }
 
 if (require.main === module) {
-  runAll();
+  runDemo();
 }
 
 module.exports = {
